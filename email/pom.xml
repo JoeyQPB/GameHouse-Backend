@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.ms</groupId>
 	<artifactId>email</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>email</name>
 	<description>Ms to send email when register a new user</description>
 	<properties>
