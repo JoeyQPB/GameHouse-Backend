@@ -1,4 +1,26 @@
-FROM ubuntu:latest
-LABEL authors="joey_"
+FROM azul/zulu-openjdk:17
 
-ENTRYPOINT ["top", "-b"]
+# Define argumentos de construção
+ARG SPRING_MAIL_USERNAME
+ARG SPRING_MAIL_PASSWORD
+
+# Defina variáveis de ambiente para uso durante a construção da imagem
+ENV SPRING_MAIL_USERNAME=${EMAIL_USERNAME}
+ENV SPRING_MAIL_PASSWORD=${EMAIL_PASSWORD}
+
+WORKDIR /app
+
+COPY target/email-1.0.0.jar /app/email-welcome-ms.jar
+
+# Copia o arquivo de configuração
+COPY src/main/resources/application.properties /app/application.properties
+
+# Substitua as variáveis no arquivo application.properties
+RUN sed -i "s|spring.mail.username=.*|spring.mail.username=${EMAIL_USERNAME}|g" /app/application.properties && \
+    sed -i "s|spring.mail.password=.*|spring.mail.password=${EMAIL_PASSWORD}|g" /app/application.properties && \
+
+EXPOSE 8084
+
+CMD ["java", "-jar", "/app/email-welcome-ms.jar"]
+
+#docker build --build-arg SPRING_MAIL_USERNAME=seu_acesso --build-arg SPRING_MAIL_PASSWORD=sua_chave -t minha_imagem .
