@@ -2,8 +2,8 @@ FROM azul/zulu-openjdk:17
 
 WORKDIR /app
 
-COPY target/gamehouse-sugestion-service-1.0.0.jar /app/suggestion-ms.jar
+COPY target/gamehouse-api-gateway-1.0.0.jar /app/api-gateway-ms.jar
 
-EXPOSE 8082
+EXPOSE 8765
 
-CMD ["java", "-jar", "/app/suggestion-ms.jar"]
+CMD ["java", "-jar", "/app/api-gateway-ms.jar"]
