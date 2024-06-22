@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.joey</groupId>
 	<artifactId>gamehouse-sendEmail-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>gamehouse-sendEmail-service</name>
 	<description>Send Email microsservice to Game House project</description>
 	<properties>
