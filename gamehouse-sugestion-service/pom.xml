@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.joey</groupId>
 	<artifactId>gamehouse-sugestion-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>gamehouse-sugestion-service</name>
 	<description>Sugestions microsservice to Game House project</description>
 	<properties>

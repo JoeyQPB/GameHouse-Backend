@@ -8,10 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Value("${url.api.gateway}")
+    @Value("${url.api.gateway:url}")
     private String urlApiGateway;
 
-    @Value("${url.frontend}")
+    @Value("${url.frontend:url}")
     private String urlFrontEnd;
 
     @Override
