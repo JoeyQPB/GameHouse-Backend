@@ -7,13 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project:
-          - name: email-welcome-ms
-            directory: email
-            build_args: "--build-arg SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }} --build-arg SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }}"
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -60,7 +54,7 @@ jobs:
       #   working-directory: ./gamehouse-api-gateway
 
       - name: Build Docker image for email-welcome-ms
-        run: docker build -t ${{ matrix.project.build_args }} ${{ secrets.DOCKER_USERNAME }}/email-welcome-ms .
+        run: docker build -t --build-arg SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }} --build-arg SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }} ${{ secrets.DOCKER_USERNAME }}/email-welcome-ms .
         working-directory: ./email
 
       # - name: Build Docker image for send-email-ms
