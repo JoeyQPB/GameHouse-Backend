@@ -7,10 +7,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
-        directory: [gamehouse-user-service, gamehouse-sugestion-service, gamehouse-api-gateway, email, gamehouse-sendEmail-service]
+    # strategy:
+    #   matrix:
+    #     project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
+    #     directory: [gamehouse-user-service, gamehouse-sugestion-service, gamehouse-api-gateway, email, gamehouse-sendEmail-service]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -21,9 +21,25 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Build Projects
+      - name: Build Project user-service
         run: mvn clean install -DskipTests
-        working-directory: ./${{ matrix.directory }}
+        working-directory: ./gamehouse-user-service
+
+      - name: Build Project sugestion-service
+        run: mvn clean install -DskipTests
+        working-directory: ./gamehouse-sugestion-service
+
+      - name: Build Project api-gateway
+        run: mvn clean install -DskipTests
+        working-directory: ./gamehouse-api-gateway
+
+      - name: Build Project email
+        run: mvn clean install -DskipTests
+        working-directory: ./email
+
+      - name: Build Project sendEmail
+        run: mvn clean install -DskipTests
+        working-directory: ./gamehouse-sendEmail-service          
 
       - name: Login Docker Hub
         # run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
