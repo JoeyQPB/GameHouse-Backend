@@ -17,7 +17,7 @@ COPY src/main/resources/application.properties /app/application.properties
 
 # Substitua as variáveis no arquivo application.properties
 RUN sed -i "s|spring.mail.username=.*|spring.mail.username=${EMAIL_USERNAME}|g" /app/application.properties && \
-    sed -i "s|spring.mail.password=.*|spring.mail.password=${EMAIL_PASSWORD}|g" /app/application.properties && \
+    sed -i "s|spring.mail.password=.*|spring.mail.password=${EMAIL_PASSWORD}|g" /app/application.properties && 
 
 EXPOSE 8084
 
