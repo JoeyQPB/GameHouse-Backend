@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: postgre
+      POSTGRES_PASSWORD: postgre
+      POSTGRES_DB: GameHouse
+    ports:
+      - "5432:5432"
+    networks:
+      - gamehouse-net
+
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "erlang-cookie"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - gamehouse-net
+
+  user-ms:
+    image: joeyqpbdev/user-ms:latest
+    container_name: user-ms-container
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "8081:8081"
+    networks:
+      - gamehouse-net
+  
+  suggestion-ms:
+    image: joeyqpbdev/suggestion-ms:latest
+    container_name: suggestion-ms-container
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "8082:8082"
+    networks:
+      - gamehouse-net
+
+  send-email-ms:
+    image: joeyqpbdev/send-email-ms:latest
+    container_name: send-email-ms-container
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "8083:8083"
+    networks:
+      - gamehouse-net 
+
+  email-welcome-ms:
+    image: joeyqpbdev/email-welcome-ms:latest
+    container_name: email-welcome-ms-container
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "8084:8084"
+    networks:
+      - gamehouse-net
+
+  api-gateway-ms:
+    image: joeyqpbdev/api-gateway-ms:latest
+    container_name: api-gateway-ms-container
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "8765:8765"
+    networks:
+      - gamehouse-net             
+
+volumes:
+  rabbitmq_data:
+    driver: local
+
+networks:
+  gamehouse-net:
+    driver: bridge
