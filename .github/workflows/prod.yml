@@ -7,10 +7,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
-        directory: [, gamehouse-sugestion-service, gamehouse-api-gateway, email, gamehouse-sendEmail-service]
+    # strategy:
+    #   matrix:
+    #     project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
+    #     directory: [, gamehouse-sugestion-service, gamehouse-api-gateway, email, gamehouse-sendEmail-service]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
