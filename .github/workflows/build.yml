@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategt:
+    strategy:
       matrix:
         project:
             - name: email-welcome-ms
