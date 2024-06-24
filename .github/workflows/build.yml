@@ -52,14 +52,9 @@ jobs:
       #   run: docker build -t ${{ secrets.DOCKER_USERNAME }}/api-gateway-ms .
       #   working-directory: ./gamehouse-api-gateway
 
-      - name: List files in working directory
-        run: ls -al
-        working-directory: ./email
-
       - name: Build Docker image for email-welcome-ms
-        run: |
-          cd ./email
-          docker build --build-arg SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }} --build-arg SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }} -t ${{ secrets.DOCKER_USERNAME }}/email-welcome-ms .
+        run: docker build --build-arg SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }} --build-arg SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }} -t ${{ secrets.DOCKER_USERNAME }}/email-welcome-ms .
+        working-directory: ./email
 
       # - name: Build Docker image for send-email-ms
       #   run: docker build --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} --build-arg AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} --build-arg AWS_REGION=${{ secrets.AWS_REGION }} -t ${{ secrets.DOCKER_USERNAME }}/send-email-ms .
