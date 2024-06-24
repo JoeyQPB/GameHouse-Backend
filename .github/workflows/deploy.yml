@@ -1,0 +1,89 @@
+name: Deploy for Multiple Spring Boot Apps
+
+on:
+  workflow_run:
+    workflows: ["Build for Multiple Spring Boot Apps"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull image from docker hub for user-ms
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/user-ms:latest
+
+      - name: Remove container for user-ms if exists
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker rm -f user-ms-container
+
+      - name: Run docker container for user-ms
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker run -d --name user-ms-container --network gamehouse-net ${{ secrets.DOCKER_USERNAME }}/user-ms:latest
+
+      - name: Pull image from docker hub for suggestion-ms
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/suggestion-ms:latest
+
+      - name: Remove container for suggestion-ms if exists
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker rm -f suggestion-ms-container
+
+      - name: Run docker container for suggestion-ms
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker run -d --name suggestion-ms-container --network gamehouse-net ${{ secrets.DOCKER_USERNAME }}/suggestion-ms:latest
+
+      - name: Pull image from docker hub for api-gateway-ms
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/api-gateway-ms:latest
+
+      - name: Remove container for api-gateway-ms if exists
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker rm -f api-gateway-ms-container
+
+      - name: Run docker container for api-gateway-ms
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker run -d --name api-gateway-ms-container --network gamehouse-net ${{ secrets.DOCKER_USERNAME }}/api-gateway-ms:latest
+
+      - name: Pull image from docker hub for email-welcome-ms
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/email-welcome-ms:latest
+
+      - name: Remove container for email-welcome-ms if exists
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker rm -f email-welcome-ms-container
+
+      - name: Run docker container for email-welcome-ms
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker run -d --name email-welcome-ms-container --network gamehouse-net ${{ secrets.DOCKER_USERNAME }}/email-welcome-ms:latest
+
+      - name: Pull image from docker hub for send-email-ms
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/send-email-ms:latest
+
+      - name: Remove container for send-email-ms if exists
+        if: contains(github.event.workflow_run.conclusion, 'success')
+        run: sudo docker rm -f send-email-ms-container
+
+      - name: Run docker container for send-email-ms
+        if: contains(github.event.workflow_run.conclusion, 'success')gamehouse-net
+        run: sudo docker run -d --name send-email-ms-container --network  ${{ secrets.DOCKER_USERNAME }}/send-email-ms:latest
+
+
+# jobs:
+#   deploy:
+#     runs-on: self-hosted
+#     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+#     strategy:
+#       matrix:
+#         project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
+#     steps:
+#       - name: Pull image from docker hub
+#         run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
+
+#       - name: Remove container if exists
+#         run: sudo docker rm -f ${{ matrix.project }}-container
+
+#       - name: Run docker container
+#         run: sudo docker run -d --name ${{ matrix.project }}-container --network bookstore-net ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
