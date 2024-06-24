@@ -22,5 +22,3 @@ RUN sed -i "s|spring.mail.username=.*|spring.mail.username=${EMAIL_USERNAME}|g" 
 EXPOSE 8084
 
 CMD ["java", "-jar", "/app/email-welcome-ms.jar"]
-
-#docker build --build-arg SPRING_MAIL_USERNAME=seu_acesso --build-arg SPRING_MAIL_PASSWORD=sua_chave -t minha_imagem .
