@@ -1,0 +1,73 @@
+name: Deploy for Multiple Spring Boot Apps
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
+        directory: [gamehouse-user-service, gamehouse-sugestion-service, gamehouse-api-gateway, email, gamehouse-sendEmail-service]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: SetUp Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Build Project
+        run: mvn clean install -DskipTests
+        working-directory: ./GameHouse-BackEnd/${{ matrix.directory }}
+
+      - name: Login Docker Hub
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+
+      - name: Build Docker image for user-ms
+        if: matrix.project == 'user-ms'
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/user-ms .
+        working-directory: ./GameHouse-BackEnd/gamehouse-user-service
+
+      - name: Build Docker image for suggestion-ms
+        if: matrix.project == 'suggestion-ms'
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/suggestion-ms .
+        working-directory: ./GameHouse-BackEnd/gamehouse-sugestion-service
+
+      - name: Build Docker image for api-gateway-ms
+        if: matrix.project == 'api-gateway-ms'
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/api-gateway-ms .
+        working-directory: ./GameHouse-BackEnd/gamehouse-api-gateway
+
+      - name: Build Docker image for email-welcome-ms
+        if: matrix.project == 'email-welcome-ms'
+        run: docker build --build-arg SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }} --build-arg SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }} -t ${{ secrets.DOCKER_USERNAME }}/email-welcome-ms .
+        working-directory: ./GameHouse-BackEnd/email
+
+      - name: Build Docker image for send-email-ms
+        if: matrix.project == 'send-email-ms'
+        run: docker build --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} --build-arg AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} --build-arg AWS_REGION=${{ secrets.AWS_REGION }} -t ${{ secrets.DOCKER_USERNAME }}/send-email-ms .
+        working-directory: ./GameHouse-BackEnd/gamehouse-sendEmail-service  
+
+      - name: Push image to docker hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}
+
+  # deploy:
+  #   needs: build
+  #   runs-on: self-hosted
+  #   strategy:
+  #     matrix:
+  #       project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
+  #   steps:
+  #     - name: Pull image from docker hub
+  #       run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
+
+  #     - name: Remove container if exists
+  #       run: sudo docker rm -f ${{ matrix.project }}-container
+
+  #     - name: Run docker container
+  #       run: sudo docker run -d --name ${{ matrix.project }}-container --network gamehouse-net ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
