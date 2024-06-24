@@ -54,7 +54,7 @@ jobs:
       #   working-directory: ./gamehouse-api-gateway
 
       - name: Build Docker image for email-welcome-ms
-        run: docker build -t --build-arg SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }} --build-arg SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }} ${{ secrets.DOCKER_USERNAME }}/email-welcome-ms .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/email-welcome-ms --build-arg SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }} --build-arg SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }} .
         working-directory: ./email
 
       # - name: Build Docker image for send-email-ms
