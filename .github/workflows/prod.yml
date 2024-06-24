@@ -23,7 +23,7 @@ jobs:
 
       - name: Build Project user service
         run: mvn clean install -DskipTests
-        # working-directory: GameHouse-BackEnd/gamehouse-user-service
+        working-directory: /gamehouse-user-service
 
       # - name: Login Docker Hub
       #   # run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
