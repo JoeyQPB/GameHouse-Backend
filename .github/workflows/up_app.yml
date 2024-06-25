@@ -12,12 +12,6 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Docker Compose
-        uses: docker/compose-cli-action@v0.1.1
-
       - name: Remove existing docker-compose.yml if exists
         run: |
           if [ -f /home/ubuntu/apps/docker-compose.yml ]; then
