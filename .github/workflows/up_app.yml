@@ -1,19 +1,15 @@
 name: Up Application
 
-# on:
-#   workflow_run:
-#     workflows: ["Deploy for Multiple Spring Boot Apps"]
-#     types:
-#       - completed
-
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: ["Deploy for Multiple Spring Boot Apps"]
+    types:
+      - completed
 
 jobs:
   docker-compose:
     runs-on: self-hosted
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout code
