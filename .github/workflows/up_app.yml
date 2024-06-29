@@ -1,10 +1,13 @@
 name: Up Application
 
+# on:
+#   workflow_run:
+#     workflows: ["Deploy for Multiple Spring Boot Apps"]
+#     types:
+#       - completed
 on:
-  workflow_run:
-    workflows: ["Deploy for Multiple Spring Boot Apps"]
-    types:
-      - completed
+  push:
+    branches: [main]
 
 jobs:
   docker-compose:

@@ -1,24 +1,24 @@
-name: Deploy for Multiple Spring Boot Apps
+# name: Deploy for Multiple Spring Boot Apps
 
-on:
-  workflow_run:
-    workflows: ["Build for Multiple Spring Boot Apps"]
-    types:
-      - completed
+# on:
+#   workflow_run:
+#     workflows: ["Build for Multiple Spring Boot Apps"]
+#     types:
+#       - completed
 
-jobs:
-  deploy:
-    runs-on: self-hosted
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    strategy:
-      matrix:
-        project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
-    steps:
-      - name: Pull image from docker hub
-        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
+# jobs:
+#   deploy:
+#     runs-on: self-hosted
+#     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+#     strategy:
+#       matrix:
+#         project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
+#     steps:
+#       - name: Pull image from docker hub
+#         run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
 
-      - name: Remove container if exists
-        run: sudo docker rm -f ${{ matrix.project }}-container
+#       - name: Remove container if exists
+#         run: sudo docker rm -f ${{ matrix.project }}-container
 
-      # - name: Run docker container
-      #   run: sudo docker run -d --name ${{ matrix.project }}-container --network gamehouse-net ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
+#       # - name: Run docker container
+#       #   run: sudo docker run -d --name ${{ matrix.project }}-container --network gamehouse-net ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
