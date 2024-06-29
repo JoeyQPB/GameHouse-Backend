@@ -21,7 +21,7 @@ jobs:
         run: sudo docker rm -f ${{ matrix.project }}-container
 
       - name: remove old images
-        run: docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
+        run: docker rmi ${{ matrix.project }}:latest
 
       - name: Pull image from docker hub
         run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
