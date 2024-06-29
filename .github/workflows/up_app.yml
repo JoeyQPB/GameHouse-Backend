@@ -19,9 +19,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: List files in root directory
-        run: ls -al
-        working-directory: ${{ github.workspace }}
+      - name: Create apps directory if not exists
+        run: sudo mkdir -p /home/ubuntu/apps
 
       - name: Create Docker network if not exists
         run: |
