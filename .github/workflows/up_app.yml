@@ -1,10 +1,10 @@
 name: Up Application
 
-on:
-  workflow_run:
-    workflows: ["Deploy for Multiple Spring Boot Apps"]
-    types:
-      - completed
+# on:
+#   workflow_run:
+#     workflows: ["Deploy for Multiple Spring Boot Apps"]
+#     types:
+#       - completed
 
 jobs:
   docker-compose:
@@ -27,6 +27,7 @@ jobs:
 
       - name: Copy docker-compose file
         run: sudo cp ./docker-compose.yml /home/ubuntu/apps/docker-compose.yml
+        working-directory: ./GameHouse-BackEnd
 
       - name: Deploy Docker Compose stack
         run: sudo docker-compose -f /home/ubuntu/apps/docker-compose.yml up -d
