@@ -28,7 +28,7 @@ jobs:
         run: |
           if [ -f /home/ubuntu/apps/docker-compose.yml ]; then
             sudo docker-compose -f /home/ubuntu/apps/docker-compose.yml down
-            rm /home/ubuntu/apps/docker-compose.yml
+            sudo rm /home/ubuntu/apps/docker-compose.yml
           fi
 
       - name: Copy docker-compose file
