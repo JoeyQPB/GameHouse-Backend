@@ -21,8 +21,8 @@ jobs:
 
       - name: List files in root directory
         run: ls -al
-        working-directory: /
-        
+        working-directory: ${{ github.workspace }}
+
       - name: Create Docker network if not exists
         run: |
           if [ ! "$(sudo docker network ls | grep gamehouse-net)" ]; then
@@ -37,8 +37,8 @@ jobs:
           fi
 
       - name: Copy docker-compose file
-        run: sudo cp ./docker-compose.yml /home/ubuntu/apps/docker-compose.yml
-        working-directory: ./GameHouse-BackEnd
+        run: sudo cp docker-compose.yml /home/ubuntu/apps/docker-compose.yml
+        working-directory: ${{ github.workspace }}
 
       - name: Deploy Docker Compose stack
         run: sudo docker-compose -f /home/ubuntu/apps/docker-compose.yml up -d
