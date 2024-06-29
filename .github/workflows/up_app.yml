@@ -6,6 +6,10 @@ name: Up Application
 #     types:
 #       - completed
 
+on:
+  push:
+    branches: [main]
+
 jobs:
   docker-compose:
     runs-on: self-hosted
