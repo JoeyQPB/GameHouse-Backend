@@ -5,6 +5,7 @@ name: Up Application
 #     workflows: ["Deploy for Multiple Spring Boot Apps"]
 #     types:
 #       - completed
+
 on:
   push:
     branches: [main]
