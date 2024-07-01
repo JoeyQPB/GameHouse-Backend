@@ -20,8 +20,8 @@ jobs:
       - name: Remove container if exists
         run: sudo docker rm -f ${{ matrix.project }}-container
 
-      - name: remove old images
-        run: docker rmi -f ${{ matrix.project }}:latest
+      # - name: remove old images
+      #   run: docker rmi -f ${{ matrix.project }}:latest
 
       - name: Pull image from docker hub
         run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
