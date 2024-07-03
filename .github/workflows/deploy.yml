@@ -14,6 +14,7 @@ jobs:
       matrix:
         project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
 
+    steps:
       - name: Stop App if running
         run: |
           if [ -f /home/ubuntu/apps/docker-compose.yml ]; then
@@ -25,11 +26,10 @@ jobs:
       - name: Remove container if exists
         run: sudo docker rm -f ${{ matrix.project }}-container
 
-      - name: remove old images
-        run: sudo docker rmi -f ${{ matrix.project }}:latest
+      - name: Remove old images
+        run: |
+          sudo docker rmi -f ${{ matrix.project }}:latest
+          sudo docker images | grep '^${{ matrix.project }} ' | awk '{print $3}' | xargs sudo docker rmi -f
 
-      - name: remove old images
-        run: sudo docker images | grep '^${{ matrix.project }} ' | awk '{print $3}' | xargs sudo docker rmi -f
- 
       - name: Pull image from docker hub
         run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.project }}:latest
