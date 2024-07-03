@@ -13,9 +13,14 @@ jobs:
     strategy:
       matrix:
         project: [user-ms, suggestion-ms, api-gateway-ms, email-welcome-ms, send-email-ms]
-    steps:
-      - name: Stop App
-        run: sudo docker-compose -f /home/ubuntu/apps/docker-compose.yml down
+        
+      - name: Stop App if running
+        run: |
+          if [ -f /home/ubuntu/apps/docker-compose.yml ]; then
+            if sudo docker-compose -f /home/ubuntu/apps/docker-compose.yml ps -q | grep -q .; then
+              sudo docker-compose -f /home/ubuntu/apps/docker-compose.yml down
+            fi
+          fi
 
       - name: Remove container if exists
         run: sudo docker rm -f ${{ matrix.project }}-container
